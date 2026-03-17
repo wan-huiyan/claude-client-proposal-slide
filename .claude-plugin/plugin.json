@@ -1,0 +1,8 @@
+{
+  "name": "client-proposal-slide",
+  "description": "Generate polished, data-driven HTML presentation slides that translate technical analysis into client-friendly proposals. Produces three versions (detailed, minimal, bullet-point), auto-translates ML jargon, and optionally runs adversarial accuracy review via multi-agent panel.",
+  "version": "2.1.0",
+  "author": {
+    "name": "wan-huiyan"
+  }
+}
