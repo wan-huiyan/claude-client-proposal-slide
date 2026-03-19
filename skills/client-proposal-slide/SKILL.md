@@ -1,17 +1,20 @@
 ---
 name: client-proposal-slide
 description: |
-  Create polished, data-driven HTML presentation slides for proposing ML/data science
-  enhancements to non-technical clients. Use this skill whenever the user asks to create
-  a presentation, slide, deck, or proposal for a client based on analysis results, model
-  improvements, or data project findings. Also trigger when the user says "design a slide",
-  "make a PPT", "client presentation", "propose to the client", or wants to summarize
-  technical analysis for stakeholder buy-in. Always produces three versions: one detailed,
-  one minimal, and one plain bullet-point for traditional-deck stakeholders. Automatically
-  translates technical ML jargon into client-friendly language. Splits proposed changes into
-  "Model Optimisation" (high-confidence) and "Areas We Could Explore" (needs validation)
-  with estimated hours.
-version: 2.1.0
+  Create polished, activation-focused HTML presentation slides for proposing ML/data science
+  enhancements to non-technical clients. Starts with a brainstorming discovery phase to
+  understand audience, decision context, and stakeholder workflows before building anything.
+  Use this skill whenever the user asks to create a presentation, slide, deck, or proposal
+  for a client based on analysis results, model improvements, or data project findings. Also
+  trigger when the user says "design a slide", "make a PPT", "client presentation", "propose
+  to the client", or wants to summarize technical analysis for stakeholder buy-in. Always
+  produces three versions: one detailed, one minimal, and one plain bullet-point for
+  traditional-deck stakeholders. Automatically translates technical ML jargon into
+  client-friendly language. Splits proposed changes into "Model Optimisation" (high-confidence)
+  and "Areas We Could Explore" (needs validation) with estimated hours. Every proposal item
+  includes business activation — who acts, what changes in their workflow, and how success is
+  measured. Delegates HTML generation to the frontend-design skill for distinctive visual quality.
+version: 3.0.0
 ---
 
 # Client Proposal Slide Generator
@@ -29,7 +32,36 @@ into client-friendly proposals. The output is a self-contained HTML file at 16:9
 
 ## Process
 
-### Step 1: Gather Source Material
+### Step 1: Discovery & Context (Brainstorming Phase)
+
+Before building anything, invoke the `brainstorming` skill mindset to understand what the user
+actually needs. Ask clarifying questions **one at a time** to fill in gaps. Do NOT proceed to
+slide creation until you have clear answers on these dimensions:
+
+**Required context (ask if not provided):**
+1. **Who is in the room?** — Job titles, decision-making authority, technical literacy level.
+   A VP of Enrollment thinks differently than a CIO. Tailor language and emphasis accordingly.
+2. **What decision does this need to drive?** — Budget approval? Prioritization? Buy-in for
+   a pilot? "Informational" is not a valid answer — every proposal needs an ask.
+3. **What can they actually do with this?** — Which teams will act on the insights? What
+   existing workflows or tools will change? If you can't name concrete actions, the proposal
+   is too abstract.
+4. **What's the status quo cost?** — What happens if they do nothing? Lost revenue, missed
+   students, operational blind spots? Quantify inaction.
+5. **What has been tried before?** — Prior initiatives, vendor tools, or internal projects
+   in this space. Avoids proposing something they've already rejected.
+
+**Optional context (ask if relevant):**
+- Timeline constraints or budget cycles
+- Competing priorities or organizational politics
+- Whether this is a first proposal or a follow-up to prior work
+- Preferred presentation format (screen share, printed, emailed)
+
+**HARD GATE:** Do not proceed to Step 2 until the user has answered at minimum questions 1-3.
+If the user says "just make it", push back once — the activation framing requires knowing the
+audience and the desired action. If they insist, use reasonable defaults and flag assumptions.
+
+### Step 2: Gather Source Material
 
 Read all referenced analysis files. These might be:
 - **JSON results** from analytical queries (enrollment rates, feature evaluations, etc.)
@@ -44,7 +76,7 @@ Extract the key narrative elements:
 - **The impact**: What measurable improvement is expected?
 - **The ask**: What does the client need to approve or fund?
 
-### Step 2: Translate for the Audience
+### Step 3: Translate for the Audience
 
 The audience is non-technical. Apply these principles rigorously:
 
@@ -67,7 +99,7 @@ The audience is non-technical. Apply these principles rigorously:
 - Percentages and rates are safer than raw counts for client communication (less ambiguity about deduplication)
 - When showing enrollment/conversion rates, always note what the baseline comparison is
 
-### Step 3: Categorize Proposed Changes
+### Step 4: Categorize Proposed Changes
 
 Split proposed changes into two confidence tiers:
 
@@ -87,7 +119,49 @@ with quantified diagnostic evidence (e.g., enrollment gradients, coverage gap an
 where the raw data is confounded, the sample is small, or the causal mechanism is unclear
 belong in "Explore."
 
-### Step 4: Design the Narrative Structure
+### Step 5: Business Activation — "So What? Now What?"
+
+Every proposal must answer: **"What do I do Monday morning?"** for each stakeholder in the room.
+This is the most important differentiator from a generic technical report. Without activation
+framing, even the best analysis becomes shelf-ware.
+
+**For each proposed improvement, define:**
+
+1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin",
+   "Enrollment marketing"). If nobody specific acts, the proposal is too abstract.
+2. **What changes in their workflow?** — Concrete operational shift. Not "better predictions"
+   but "counselors receive a prioritized call list each morning sorted by enrollment likelihood,
+   replacing the current alphabetical queue."
+3. **What's the trigger?** — When does this kick in? Daily report? Dashboard alert? CRM field
+   update? Automated email? Be specific about the delivery mechanism.
+4. **What's the expected behavioral change?** — How will the stakeholder's actions differ from
+   today? "Instead of calling all 500 admitted students equally, focus on the 120 flagged as
+   at-risk of not enrolling."
+5. **How will we know it's working?** — Observable success metric the stakeholder can track
+   themselves (not model accuracy — business KPIs). E.g., "yield rate for contacted at-risk
+   students vs. control group."
+
+**Activation section placement:**
+- **Detailed version:** Dedicated right-column section or callout box titled "What This Means For Your Team"
+- **Minimal version:** 2-3 bullet points under each proposed change showing the operational impact
+- **Bullet-point version:** A separate "Activation" section after the two-tier proposed changes,
+  listing stakeholder → action → expected outcome for each item
+
+**Common activation patterns for ML/propensity projects:**
+- **Prioritized outreach lists** — scores drive daily/weekly contact queues
+- **Triggered interventions** — score drops below threshold → automated alert to counselor
+- **Resource allocation** — shift budget/staffing toward segments with highest ROI
+- **Campaign targeting** — marketing segments based on propensity tiers
+- **Early warning dashboards** — leadership sees at-risk cohorts before it's too late
+- **Process redesign** — eliminate low-value steps, add high-value touchpoints
+
+**Anti-patterns to avoid:**
+- "Improved predictions" without saying who uses them and how
+- "Better insights" without naming the insight and the action it drives
+- "Data-driven decisions" without specifying which decision changes
+- Activation plans that require the client to build new infrastructure you haven't scoped
+
+### Step 6: Design the Narrative Structure
 
 Organize content into a left-to-right story flow:
 
@@ -115,23 +189,23 @@ All versions must include:
 - A visually prominent callout for the primary recommendation
 - Estimated hours per item in the proposed changes section
 
-### Step 5: Build the HTML
+### Step 7: Build the HTML (via `frontend-design` skill)
 
-Use the `frontend-design` skill's principles for visual quality:
+Invoke the `frontend-design` skill for HTML generation. This skill handles typography, color,
+motion, spatial composition, and visual details — do NOT re-implement those decisions here.
+Instead, pass the frontend-design skill the following constraints specific to proposal slides:
 
-**Typography:** Use Google Fonts — pair a distinctive serif display font (e.g., Fraunces, Playfair Display) with a clean sans-serif body font (e.g., Outfit, DM Sans). Never use generic system fonts.
+**Constraints to pass to frontend-design:**
+- **Format:** Self-contained HTML at 1280x720px (16:9 aspect ratio)
+- **Purpose:** Client-facing proposal slide — must feel premium, trustworthy, and actionable
+- **Tone:** Match to audience (executive = refined/minimal, operational = data-rich/structured)
+- **The "recommended" action should use a warm accent (amber/gold) to draw the eye**
+- **Must include `@media print` rules for PDF export**
+- **Self-contained (all styles inline, Google Fonts via CDN)**
 
-**Color:** Pick a cohesive scheme appropriate to the content:
-- Dark themes work well for data-heavy, impressive slides
-- Light themes work well for clean, simple proposals
-- Use accent colors strategically for key numbers and callouts
-- The "recommended" action should use a warm accent (amber/gold) to draw the eye
-
-**Layout:**
-- Fixed 1280x720px (16:9 aspect ratio)
+**Content layout guidance (pass to frontend-design as structure requirements):**
 - CSS Grid for the main layout
 - Generous padding (44-56px edges)
-- Thin accent line at top for visual polish
 - Clear section labels (uppercase, letter-spaced, colored)
 
 **Data visualization:**
@@ -140,11 +214,12 @@ Use the `frontend-design` skill's principles for visual quality:
 - Progress bars for before/after comparisons
 - Keep it simple — if a number tells the story, you don't need a chart
 
-**Responsive considerations:**
-- Include `@media print` rules for PDF export
-- Self-contained (all styles inline, Google Fonts via CDN)
+**Activation section styling:**
+- The "What This Means For Your Team" / activation content from Step 5 should be visually
+  distinct — use a different background shade, icon badges per stakeholder role, or a
+  bordered callout box. This section is what makes the proposal actionable, not just informative.
 
-### Step 6: Deliver Three Versions
+### Step 8: Deliver Three Versions
 
 Always produce all three:
 
@@ -154,7 +229,7 @@ Always produce all three:
 
 Open all three in the browser for the user to preview. Explain the key differences.
 
-### Step 7: Accuracy Review (Optional but Recommended)
+### Step 9: Accuracy Review (Optional but Recommended)
 
 When the deck makes **verifiable claims** against a codebase, data source, or analysis pipeline,
 run the `agent-review-panel` skill to adversarially verify accuracy before presenting.
@@ -188,7 +263,7 @@ run the `agent-review-panel` skill to adversarially verify accuracy before prese
 After fixing panel findings, apply the same fixes across all three versions (detailed, minimal, bullets)
 and any translations.
 
-### Step 8: Iterate on Feedback
+### Step 10: Iterate on Feedback
 
 Client-facing materials require iteration. Common feedback patterns:
 - "Too technical" → rewrite using the language rules above
@@ -200,6 +275,7 @@ Client-facing materials require iteration. Common feedback patterns:
 ## Quality Checklist
 
 Before delivering, verify:
+- [ ] Discovery questions answered (Step 1) — audience, decision, activation identified
 - [ ] No ML jargon (AUC, entropy, precision, recall, F1, log-odds, calibration)
 - [ ] No unvalidated accuracy claims
 - [ ] All counts verified for deduplication
@@ -208,11 +284,13 @@ Before delivering, verify:
 - [ ] Primary recommendation is visually prominent
 - [ ] Proposed changes split into "Model Optimisation" and "Areas We Could Explore"
 - [ ] Estimated hours included for each proposed item
+- [ ] **Business activation defined** — each proposal item has: who acts, what changes, success metric
+- [ ] **No orphan proposals** — every item answers "what does the stakeholder do differently Monday morning?"
 - [ ] All three versions produced (detailed, minimal, bullet-point)
 - [ ] Footer includes implementation reassurances
-- [ ] Google Fonts load correctly (test in browser)
+- [ ] HTML built via `frontend-design` skill (not generic templates)
 - [ ] Renders cleanly at 1280x720
-- [ ] If deck references verifiable code/data: accuracy review panel run (Step 7)
+- [ ] If deck references verifiable code/data: accuracy review panel run (Step 9)
 
 ## Example: Narrative Framing
 
@@ -232,3 +310,22 @@ Before delivering, verify:
 **Good (cautious):**
 > "Some students progress through the admissions funnel without triggering these
 > digital events — Salesforce holds the authoritative record."
+
+## Example: Activation Framing
+
+**Bad (no activation):**
+> "The system will produce more accurate predictions by incorporating deposit status data."
+
+**Good (activation-focused):**
+> "Each morning, admissions counselors receive a prioritized outreach list — students
+> who've been accepted but haven't deposited, ranked by risk of choosing another school.
+> Instead of calling all 200 accepted students, your team focuses on the 40 most at-risk.
+> You'll know it's working when deposit rates for contacted students exceed the baseline."
+
+**Bad (vague stakeholder):**
+> "This improvement benefits the enrollment team."
+
+**Good (specific stakeholder + action):**
+> "Your enrollment marketing team adjusts email cadence by propensity tier — high-risk
+> students get a personal outreach call within 48 hours of acceptance, while low-risk
+> students continue the standard drip campaign."
