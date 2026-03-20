@@ -34,19 +34,26 @@ The skill auto-triggers when you say things like:
 
 ## Installation
 
-### Claude Code CLI (recommended)
+### Claude Code (recommended)
 ```bash
-claude install-skill github:wan-huiyan/claude-client-proposal-slide
+/plugin marketplace add wan-huiyan/claude-client-proposal-slide
+/plugin install client-proposal-slide@wan-huiyan-client-proposal-slide
 ```
 
-### Git Clone
+Or clone directly:
 ```bash
-git clone https://github.com/wan-huiyan/claude-client-proposal-slide.git
-cp -r claude-client-proposal-slide/skills/client-proposal-slide ~/.claude/skills/
+git clone https://github.com/wan-huiyan/claude-client-proposal-slide.git ~/.claude/skills/client-proposal-slide
 ```
 
-### Manual
-Copy `SKILL.md` into `~/.claude/skills/client-proposal-slide/SKILL.md`
+### Cursor
+```bash
+# Per-project rule (most reliable)
+mkdir -p .cursor/rules
+# Create .cursor/rules/client-proposal-slide.mdc with SKILL.md content + alwaysApply: true
+
+# Or global install
+git clone https://github.com/wan-huiyan/claude-client-proposal-slide.git ~/.cursor/skills/client-proposal-slide
+```
 
 ## What You Get
 
