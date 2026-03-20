@@ -1,0 +1,14 @@
+{
+  "name": "client-proposal-slide",
+  "owner": {
+    "name": "Huiyan Wan"
+  },
+  "plugins": [
+    {
+      "name": "client-proposal-slide",
+      "source": ".",
+      "description": "Activation-focused HTML presentation slides from technical analysis for non-technical stakeholders.",
+      "version": "3.0.0"
+    }
+  ]
+}

@@ -68,13 +68,19 @@ HTML generation is delegated to the `frontend-design` skill for distinctive visu
 
 ## Installation
 
+### Claude Code CLI (recommended)
 ```bash
-# Add the marketplace
-/plugin marketplace add wan-huiyan/claude-client-proposal-slide
-
-# Or install directly
-/plugin install client-proposal-slide
+claude install-skill github:wan-huiyan/claude-client-proposal-slide
 ```
+
+### Git Clone
+```bash
+git clone https://github.com/wan-huiyan/claude-client-proposal-slide.git
+cp -r claude-client-proposal-slide/skills/client-proposal-slide ~/.claude/skills/
+```
+
+### Manual
+Copy `SKILL.md` into `~/.claude/skills/client-proposal-slide/SKILL.md`
 
 ## Usage
 
@@ -160,6 +166,34 @@ The skill enforces these checks before delivery:
 - **Optional:** `agent-review-panel` skill for Step 9 accuracy verification
 - **Optional:** `frontend-design` skill for Step 7 HTML generation (recommended for visual quality)
 - **Optional:** `brainstorming` skill (Step 1 discovery phase embeds its mindset inline)
+
+## PDF Export Tips
+
+The generated HTML files can be converted to PDF. Key CSS rules the skill applies for clean page breaks:
+
+- `break-inside: avoid` on cards, callouts, tables, and paragraphs — prevents content splitting across pages
+- `break-after: avoid` on section headers — keeps headers attached to their content
+- `flex-wrap: nowrap` on flow diagrams — prevents architecture nodes from wrapping to a second row
+- Explicit `page-break-before` class on major sections — forces clean page transitions
+
+To convert to PDF, use browser Print > Save as PDF, or programmatically via puppeteer:
+
+```javascript
+const page = await browser.newPage();
+await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' });
+await page.pdf({
+  path: 'output.pdf',
+  format: 'A4',
+  printBackground: true,
+  margin: { top: '15mm', bottom: '15mm', left: '12mm', right: '12mm' },
+});
+```
+
+## Related Skills
+
+- **[ml-feature-evaluator](https://github.com/wan-huiyan/ml-feature-evaluator)** — Structured 10-step go/no-go diagnostic for evaluating ML features. Often produces the analysis results that feed into client proposals.
+- **[ml-training-window-assessor](https://github.com/wan-huiyan/ml-training-window-assessor)** — Training window extension assessment. Proposals involving "more training data" use this skill's output.
+- **[agent-review-panel](https://github.com/wan-huiyan/agent-review-panel)** — Multi-agent adversarial review. Used in Step 9 for accuracy verification of slide claims.
 
 ## Version History
 
