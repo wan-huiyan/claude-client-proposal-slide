@@ -1,70 +1,36 @@
 # Client Proposal Slide Generator
 
-A Claude Code skill that creates polished, activation-focused HTML presentation slides from technical analysis results. Designed for data scientists and ML engineers who need to communicate findings to non-technical stakeholders — with a focus on what stakeholders can **do** with the results.
+A [Claude Code](https://claude.com/claude-code) skill that turns technical analysis into stakeholder-ready HTML presentations — with business activation framing so your audience knows exactly what to do next.
 
-## What It Does
+![Demo slide output](docs/demo-slide.png)
+*Example output: a proposal slide with two-tier recommendations, estimated hours, and a "What changes for your team" activation panel.*
 
-Starts with a **discovery phase** to understand your audience and their decision context, then takes your analysis results (JSON, markdown, BQ output, SQL capabilities, or conversation context) and produces **three self-contained HTML presentations** at 16:9 (1280x720px):
+## Quick Start
 
-1. **Detailed** — Full evidence, multiple data points, comprehensive impact section, activation callout
-2. **Minimal** — ~40% less text, simpler layout, same key message with inline activation
-3. **Bullet-point** — Plain text for traditional-deck stakeholders, with separate activation section
+```
+You: I have analysis results in results.json — make a client proposal slide
 
-Each file can be opened in a browser, screenshotted for PowerPoint, or printed to PDF.
+Claude: Before I build the slide, I need to understand the context:
+        1. Who will be in the room?
 
-## Key Features
+You: VP of Marketing and two campaign managers
 
-### Discovery Phase (Brainstorming)
-Before building anything, the skill asks clarifying questions to understand:
-- **Who is in the room?** — Job titles, decision-making authority, technical literacy
-- **What decision does this need to drive?** — Budget approval, prioritization, pilot buy-in
-- **What can they actually do with this?** — Which teams act, what workflows change
-- **What's the status quo cost?** — Quantify inaction
-- **What has been tried before?** — Avoid proposing rejected ideas
+Claude: 2. What decision should this drive?
 
-Hard gate: won't proceed until audience, decision, and activation are clear.
+You: Approve 30 hours of model improvements
 
-### Business Activation — "So What? Now What?"
-Every proposal item must answer **"What do I do Monday morning?"** for each stakeholder:
-- **Who acts** — Named team/role (not "the organization")
-- **What changes** — Concrete workflow shift (not "better predictions")
-- **What triggers it** — Daily report, dashboard alert, CRM update
-- **Expected behavioral change** — How actions differ from today
-- **Success metric** — Observable business KPI (not model accuracy)
+Claude: 3. What would change for their teams day-to-day?
 
-Common activation patterns: prioritized outreach lists, triggered interventions, resource allocation, campaign targeting, early warning dashboards.
+You: Campaign managers get a daily prioritized list instead of batch-blasting everyone
 
-### Jargon-Free Translation
-Automatically converts technical language into client-friendly terms:
-- "AUC improved from 0.50 to 0.96" → "The system can now clearly distinguish between different student groups"
-- "features" → "signals" or "data points"
-- "model" → "the system" or "the scoring system"
+Claude: [Reads file, translates jargon, builds activation framing,
+         produces 3 HTML slides + PDF, opens in browser]
+```
 
-### Two-Tier Confidence Structure
-Every proposal splits recommendations into:
-- **"Model Optimisation"** — High-confidence items backed by diagnostic evidence, with estimated hours
-- **"Areas We Could Explore"** — Directionally promising but needs validation, with hours + what validation is needed
-
-This builds trust by showing analytical rigor rather than overselling.
-
-### Adversarial Accuracy Review
-When your deck makes verifiable claims against a codebase or data source, the skill can trigger a **multi-agent review panel** (via the `agent-review-panel` skill) to fact-check every claim before you present.
-
-Common over-claim patterns it catches:
-- Counting file variants as distinct capabilities (inflated headline numbers)
-- Presenting multi-step pipelines as single capabilities
-- Claiming causal inference when only observational comparison exists
-- Using universal quantifiers ("every", "all") when coverage is partial
-- Listing capabilities without backing implementation
-
-### Design Quality (via `frontend-design` skill)
-HTML generation is delegated to the `frontend-design` skill for distinctive visual quality:
-- Distinctive Google Fonts pairings (no generic system fonts)
-- Cohesive color schemes matched to audience tone
-- CSS Grid layouts with generous padding
-- `@media print` rules for PDF export
-- Horizontal bar charts, stat cards, progress bars (pure CSS, no JS libraries)
-- Visually distinct activation section (callout box, icon badges, different background)
+The skill auto-triggers when you say things like:
+- "Make a slide proposing the model improvements to the client"
+- "Create a presentation summarizing the analysis results"
+- "Design a deck for the stakeholder meeting"
 
 ## Installation
 
@@ -82,53 +48,93 @@ cp -r claude-client-proposal-slide/skills/client-proposal-slide ~/.claude/skills
 ### Manual
 Copy `SKILL.md` into `~/.claude/skills/client-proposal-slide/SKILL.md`
 
-## Usage
+## What You Get
 
-The skill activates automatically when you say things like:
+Four deliverables — self-contained HTML slides (16:9, 1280x720px) plus a PDF:
 
-- "Make a slide proposing the model improvements to the client"
-- "Create a deck showcasing our AMC capabilities"
-- "Design a presentation summarizing the analysis results"
-- "Client proposal for the new feature expansion"
+1. **Detailed** — Full evidence, data points, impact section, activation callout
+2. **Minimal** — ~40% less text, same key message, cleaner layout
+3. **Bullet-point** — Plain text for traditional-deck stakeholders
+4. **PDF** — Print-ready A4 with proper page breaks (no content cut off mid-page)
 
-### Example Workflow
+Each HTML file opens in a browser, screenshots for PowerPoint, or prints to PDF. The PDF version is generated automatically with `@media print` rules that prevent content splitting across pages.
 
-```
-You: I have analysis results in analysis_results.json — can you make a client proposal slide?
+## Why Not Just Ask Claude to Make a Slide?
 
-Claude: Before I build the slide, I need to understand the context:
-        1. Who will be in the room when this is presented?
+| Without This Skill | With This Skill |
+|--------------------|-----------------|
+| Jumps straight to building | Asks who's in the room and what decision this drives |
+| "AUC improved from 0.50 to 0.96" | "The system can now distinguish between different customer segments" |
+| "The model will be more accurate" | "Each morning, your team gets a prioritized action list — focus on the 40 highest-risk accounts instead of calling all 200" |
+| One generic slide | Three versions + PDF tailored to audience |
+| Technical metrics as the headline | Business outcomes as the headline |
+| You review for accuracy yourself | Optional multi-agent fact-checking panel |
 
-You: VP of Enrollment and two admissions directors
-
-Claude: 2. What decision should this drive? Budget approval, prioritization, or...?
-
-You: We need them to approve 40 hours of implementation work
-
-Claude: 3. What would change for their teams? How would admissions counselors use this day-to-day?
-
-You: They'd get a daily prioritized call list instead of calling everyone alphabetically
-
-Claude: [Reads the file, extracts narrative, translates jargon, builds activation framing,
-         produces 3 HTML files via frontend-design, opens in browser]
-```
-
-## Process Overview
+## How It Works
 
 | Step | What Happens |
 |------|-------------|
-| 1. Discover | Ask clarifying questions about audience, decision, and activation (hard gate) |
-| 2. Gather | Read all referenced analysis files, extract narrative elements |
-| 3. Translate | Convert ML jargon to client-friendly language |
-| 4. Categorize | Split into "Optimisation" vs "Explore" tiers |
-| 5. Activate | Define who acts, what changes, and success metrics for each proposal item |
-| 6. Design | Structure narrative flow (left-to-right story) |
-| 7. Build | Generate three HTML versions via `frontend-design` skill |
-| 8. Deliver | Open all three in browser for preview |
-| 9. Review | *(Optional)* Run adversarial accuracy panel if claims are verifiable |
-| 10. Iterate | Refine based on user feedback |
+| 1. Discover | Asks about audience, decision, and activation (defaults to general business audience if skipped) |
+| 2. Gather | Reads your analysis files (JSON, markdown, SQL output, conversation context) |
+| 3. Translate | Converts ML jargon to client-friendly language automatically |
+| 4. Categorize | Splits into "Ready to Implement" vs "Worth Exploring" tiers with estimated hours |
+| 5. Activate | Defines who acts, what changes, what triggers it, and how to measure success |
+| 6. Design | Structures a left-to-right narrative flow |
+| 7. Build | Generates three HTML versions via `frontend-design` skill |
+| 8. Export | Converts to PDF with proper page breaks |
+| 9. Review | *(Optional)* Runs adversarial accuracy panel to fact-check claims |
+| 10. Iterate | Refines based on your feedback |
 
-## Quality Checklist
+## Key Design Decisions
+
+### Discovery Phase
+The skill asks three questions before building: who is the audience, what decision this drives, and what changes for their team. This prevents the most common failure: beautiful slides that don't lead to action.
+
+### Business Activation
+Every proposal item answers **"What do I do Monday morning?"**:
+- **Who acts** — Named team/role, not "the organization"
+- **What changes** — Concrete workflow shift, not "better predictions"
+- **What triggers it** — Daily report, dashboard alert, CRM update
+- **Expected behavioral change** — How actions differ from today
+- **Success metric** — Observable business KPI, not model accuracy
+
+Common activation patterns: prioritized outreach lists, triggered interventions, resource allocation dashboards, campaign targeting, early warning alerts.
+
+### Two-Tier Confidence
+Recommendations split into high-confidence ("Model Optimisation" with hours) and exploratory ("Areas We Could Explore" with hours + what validation is needed). This builds trust by showing analytical rigor rather than overselling.
+
+### Jargon Translation
+| Technical | Client-Friendly |
+|-----------|----------------|
+| "AUC improved to 0.96" | "The system can now clearly distinguish between different groups" |
+| "features" | "signals" or "data points" |
+| "model" | "the system" or "the scoring system" |
+| "entropy reduction" | "we can now see meaningful differences where everything looked the same before" |
+
+<details>
+<summary>Before/After Examples</summary>
+
+**Before (technical):**
+> "Expanding the categorical feature from 4 to 7 categories improves proxy AUC from 0.50 to 0.96 with 62% entropy reduction."
+
+**After (client-friendly):**
+> "Today, all submitted applications are scored identically. By connecting to CRM data, the system can distinguish between applicants in review, accepted, and deposited — with dramatically different outcomes at each stage."
+
+**Before (no activation):**
+> "The system will produce more accurate predictions by incorporating deposit status data."
+
+**After (activation-focused):**
+> "Each morning, your team receives a prioritized outreach list — applicants who've been accepted but haven't converted, ranked by risk of choosing a competitor. Instead of contacting all 200, your team focuses on the 40 most at-risk."
+</details>
+
+### Adversarial Accuracy Review
+When your deck makes verifiable claims, the skill can trigger a multi-agent review panel to fact-check before you present. Common over-claim patterns it catches:
+- Inflated headline numbers (counting variants as distinct capabilities)
+- Causal language when only correlation exists
+- Universal quantifiers ("every", "all") when coverage is partial
+
+<details>
+<summary>Output Quality Checklist</summary>
 
 The skill enforces these checks before delivery:
 
@@ -140,68 +146,34 @@ The skill enforces these checks before delivery:
 - Title tells a story (not a technical label)
 - Proposed changes split into two confidence tiers
 - Estimated hours included per item
-- **Business activation defined** — each item has: who acts, what changes, success metric
-- **No orphan proposals** — every item answers "what does the stakeholder do differently Monday morning?"
-- All three versions produced
+- Business activation defined — each item has: who acts, what changes, success metric
+- No orphan proposals — every item answers "what does the stakeholder do differently Monday morning?"
+- All three HTML versions + PDF produced
 - HTML built via `frontend-design` skill
+- PDF has `@media print` rules preventing content from splitting across pages
 - If claims reference code/data: accuracy review panel run
-
-## Narrative Framing Examples
-
-**Bad (technical):**
-> "Expanding application_stage from 4 to 7 categories improves proxy AUC from 0.50 to 0.96 with 62% entropy reduction."
-
-**Good (client-friendly):**
-> "Today, all submitted applications are scored identically. By connecting to Salesforce admissions data, the system can distinguish between students in review, accepted, and deposited — with dramatically different enrollment outcomes at each stage."
-
-**Bad (no activation):**
-> "The system will produce more accurate predictions by incorporating deposit status data."
-
-**Good (activation-focused):**
-> "Each morning, admissions counselors receive a prioritized outreach list — students who've been accepted but haven't deposited, ranked by risk of choosing another school. Instead of calling all 200 accepted students, your team focuses on the 40 most at-risk."
+</details>
 
 ## Dependencies
 
-- **Required:** None — the skill generates self-contained HTML files
-- **Optional:** `agent-review-panel` skill for Step 9 accuracy verification
-- **Optional:** `frontend-design` skill for Step 7 HTML generation (recommended for visual quality)
-- **Optional:** `brainstorming` skill (Step 1 discovery phase embeds its mindset inline)
-
-## PDF Export Tips
-
-The generated HTML files can be converted to PDF. Key CSS rules the skill applies for clean page breaks:
-
-- `break-inside: avoid` on cards, callouts, tables, and paragraphs — prevents content splitting across pages
-- `break-after: avoid` on section headers — keeps headers attached to their content
-- `flex-wrap: nowrap` on flow diagrams — prevents architecture nodes from wrapping to a second row
-- Explicit `page-break-before` class on major sections — forces clean page transitions
-
-To convert to PDF, use browser Print > Save as PDF, or programmatically via puppeteer:
-
-```javascript
-const page = await browser.newPage();
-await page.goto(`file://${htmlPath}`, { waitUntil: 'networkidle0' });
-await page.pdf({
-  path: 'output.pdf',
-  format: 'A4',
-  printBackground: true,
-  margin: { top: '15mm', bottom: '15mm', left: '12mm', right: '12mm' },
-});
-```
+- **Required:** None — generates self-contained HTML and PDF files
+- **Recommended:** `frontend-design` skill for distinctive visual quality (without it, slides are functional but use simpler styling)
+- **Optional:** `agent-review-panel` skill for accuracy verification (without it, you review claims manually)
 
 ## Related Skills
 
-- **[ml-feature-evaluator](https://github.com/wan-huiyan/ml-feature-evaluator)** — Structured 10-step go/no-go diagnostic for evaluating ML features. Often produces the analysis results that feed into client proposals.
-- **[ml-training-window-assessor](https://github.com/wan-huiyan/ml-training-window-assessor)** — Training window extension assessment. Proposals involving "more training data" use this skill's output.
-- **[agent-review-panel](https://github.com/wan-huiyan/agent-review-panel)** — Multi-agent adversarial review. Used in Step 9 for accuracy verification of slide claims.
+- **[ml-feature-evaluator](https://github.com/wan-huiyan/ml-feature-evaluator)** — Often produces the analysis results that feed into proposals
+- **[ml-training-window-assessor](https://github.com/wan-huiyan/ml-training-window-assessor)** — Proposals involving "more training data" use this skill's output
+- **[agent-review-panel](https://github.com/wan-huiyan/agent-review-panel)** — Used for accuracy verification of slide claims
 
 ## Version History
 
 | Version | Changes |
 |---------|---------|
-| 3.0.0 | Added brainstorming discovery phase (Step 1), business activation section (Step 5), delegated HTML to frontend-design skill (Step 7) |
-| 2.1.0 | Added adversarial accuracy review step via agent-review-panel |
-| 2.0.0 | Initial release with 8-step process, three output versions, quality checklist |
+| 3.1.0 | Added PDF output with `@media print` page break rules, demo screenshot |
+| 3.0.0 | Brainstorming discovery phase, business activation section, frontend-design delegation |
+| 2.1.0 | Adversarial accuracy review via agent-review-panel |
+| 2.0.0 | Initial release |
 
 ## License
 

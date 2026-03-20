@@ -8,8 +8,8 @@ description: |
   for a client based on analysis results, model improvements, or data project findings. Also
   trigger when the user says "design a slide", "make a PPT", "client presentation", "propose
   to the client", or wants to summarize technical analysis for stakeholder buy-in. Always
-  produces three versions: one detailed, one minimal, and one plain bullet-point for
-  traditional-deck stakeholders. Automatically translates technical ML jargon into
+  produces three HTML versions (detailed, minimal, bullet-point) plus a PDF with proper
+  page breaks. Automatically translates technical ML jargon into
   client-friendly language. Splits proposed changes into "Model Optimisation" (high-confidence)
   and "Areas We Could Explore" (needs validation) with estimated hours. Every proposal item
   includes business activation — who acts, what changes in their workflow, and how success is
@@ -219,15 +219,39 @@ Instead, pass the frontend-design skill the following constraints specific to pr
   distinct — use a different background shade, icon badges per stakeholder role, or a
   bordered callout box. This section is what makes the proposal actionable, not just informative.
 
-### Step 8: Deliver Three Versions
+### Step 8: Deliver Four Outputs
 
-Always produce all three:
+Always produce all four:
 
 1. **`[name]_slide.html`** — Detailed version with full evidence, multiple data points, and comprehensive impact section
 2. **`[name]_slide_minimal.html`** — Brief version with ~40% less text, simpler layout, same key message
 3. **`[name]_slide_bullets.html`** — Plain bullet-point version for traditional-deck stakeholders. Clean white background, minimal styling, no charts. Just organized text with the two-tier structure and hours.
+4. **`[name]_slide.pdf`** — Print-ready PDF generated from the detailed HTML version
 
-Open all three in the browser for the user to preview. Explain the key differences.
+**PDF generation:** Convert the detailed HTML to PDF using puppeteer or browser print.
+The HTML must include these `@media print` rules to prevent content splitting across pages:
+
+```css
+@media print {
+  .section, .card, .callout { break-inside: avoid; }
+  p { break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+  .activation-panel { break-inside: avoid; }
+}
+```
+
+If puppeteer is available:
+```javascript
+await page.pdf({
+  path: outputPath,
+  format: 'A4',
+  printBackground: true,
+  margin: { top: '15mm', bottom: '15mm', left: '12mm', right: '12mm' },
+});
+```
+
+Open all HTML versions in the browser for the user to preview. Explain the key differences.
+Note the PDF location for sharing via email or printing.
 
 ### Step 9: Accuracy Review (Optional but Recommended)
 
@@ -286,7 +310,8 @@ Before delivering, verify:
 - [ ] Estimated hours included for each proposed item
 - [ ] **Business activation defined** — each proposal item has: who acts, what changes, success metric
 - [ ] **No orphan proposals** — every item answers "what does the stakeholder do differently Monday morning?"
-- [ ] All three versions produced (detailed, minimal, bullet-point)
+- [ ] All three HTML versions produced (detailed, minimal, bullet-point)
+- [ ] PDF version generated with proper page breaks (no content cut off mid-page)
 - [ ] Footer includes implementation reassurances
 - [ ] HTML built via `frontend-design` skill (not generic templates)
 - [ ] Renders cleanly at 1280x720
