@@ -14,7 +14,7 @@ description: |
   and "Areas We Could Explore" (needs validation) with estimated hours. Every proposal item
   includes business activation — who acts, what changes in their workflow, and how success is
   measured. Delegates HTML generation to the frontend-design skill for distinctive visual quality.
-version: 3.0.0
+version: 3.1.0
 ---
 
 # Client Proposal Slide Generator
@@ -240,7 +240,7 @@ The HTML must include these `@media print` rules to prevent content splitting ac
 }
 ```
 
-If puppeteer is available:
+**Option A — puppeteer (if available):**
 ```javascript
 await page.pdf({
   path: outputPath,
@@ -249,6 +249,25 @@ await page.pdf({
   margin: { top: '15mm', bottom: '15mm', left: '12mm', right: '12mm' },
 });
 ```
+
+**Option B — Chrome headless (fallback, no npm install needed):**
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless --disable-gpu \
+  --print-to-pdf="/absolute/path/to/output.pdf" \
+  --no-pdf-header-footer \
+  --print-to-pdf-no-header \
+  "file:///absolute/path/to/input.html"
+```
+
+Key gotchas for Chrome headless:
+- **Always use absolute paths** for both `--print-to-pdf` and the HTML URL — Chrome writes
+  relative to its own CWD, not the HTML file location.
+- **`--no-pdf-header-footer`** is critical — without it Chrome adds a date, page title, URL,
+  and page numbers to every page, which looks unprofessional.
+- **`--print-to-pdf-no-header`** is a separate flag that also helps suppress headers.
+- CVDisplayLink errors on macOS are harmless — ignore them.
+- Prefer Option B when puppeteer is not pre-installed, as `npx puppeteer` downloads ~300MB.
 
 Open all HTML versions in the browser for the user to preview. Explain the key differences.
 Note the PDF location for sharing via email or printing.
