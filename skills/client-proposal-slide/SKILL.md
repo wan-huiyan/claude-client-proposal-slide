@@ -191,11 +191,6 @@ Before delivering, verify:
 - [ ] Renders cleanly at 1280x720
 - [ ] If deck references verifiable code/data: accuracy review panel run (Step 9)
 
-## Examples
-
-See `references/language-rules.md` for narrative framing examples (bad technical vs good client-friendly).
-See `references/activation-patterns.md` for activation framing examples.
-
 ## Input / Output Contract
 
 **Input:** Takes as input one or more of: JSON analysis results, markdown reports, BQ query output,
