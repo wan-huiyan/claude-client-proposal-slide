@@ -9,8 +9,9 @@ description: |
   trigger when the user says "design a slide", "make a PPT", "client presentation", "propose
   to the client", "present findings to stakeholders", "turn analysis into a deck",
   "summarize for the VP", "build a proposal deck", "translate technical results for the client",
-  "create a one-pager for the client", "make an HTML slide", or wants to summarize technical
-  analysis for stakeholder buy-in. Produces three HTML versions (detailed, minimal, bullet-point)
+  "create a one-pager for the client", "make an HTML slide", "present findings to the VP",
+  "present to the admissions team", or wants to summarize technical analysis for stakeholder
+  buy-in. Produces three HTML versions (detailed, minimal, bullet-point)
   plus a PDF with proper page breaks. Translates technical ML jargon into client-friendly language.
   Splits proposed changes into "Model Optimisation" (high-confidence) and "Areas We Could Explore"
   (needs validation) with estimated hours. Every proposal item includes business activation — who
@@ -36,64 +37,36 @@ Create compelling, single-slide HTML presentations that translate technical ML/d
 into client-friendly proposals. The output is a self-contained HTML file at 16:9 aspect ratio
 (1280x720px) that can be opened in a browser, screenshotted for PowerPoint, or printed to PDF.
 
-## When This Skill Activates
-
-- User wants to propose model improvements or new features to a client
-- User has analysis results (JSON, markdown, BQ output, or conversation context) to visualize
-- User needs to communicate technical findings to non-technical stakeholders
-- User asks for a "slide", "deck", "presentation", or "proposal"
-
 ## Process
 
 ### Step 1: Discovery & Context (Brainstorming Phase)
 
-Before building anything, invoke the `brainstorming` skill mindset to understand what the user
-actually needs. Ask clarifying questions **one at a time** to fill in gaps. Do NOT proceed to
-slide creation until you have clear answers on these dimensions:
+Ask clarifying questions **one at a time** before building. Required context:
 
-**Required context (ask if not provided):**
-1. **Who is in the room?** — Job titles, decision-making authority, technical literacy level.
-   A VP of Enrollment thinks differently than a CIO. Tailor language and emphasis accordingly.
-2. **What decision does this need to drive?** — Budget approval? Prioritization? Buy-in for
-   a pilot? "Informational" is not a valid answer — every proposal needs an ask.
-3. **What can they actually do with this?** — Which teams will act on the insights? What
-   existing workflows or tools will change? If you can't name concrete actions, the proposal
-   is too abstract.
-4. **What's the status quo cost?** — What happens if they do nothing? Lost revenue, missed
-   students, operational blind spots? Quantify inaction.
-5. **What has been tried before?** — Prior initiatives, vendor tools, or internal projects
-   in this space. Avoids proposing something they've already rejected.
+1. **Who is in the room?** — Job titles, decision authority, technical literacy
+2. **What decision does this drive?** — Budget approval, prioritization, pilot buy-in ("informational" is not valid)
+3. **What can they do with this?** — Which teams act, what workflows change
+4. **Status quo cost?** — Quantify what happens if they do nothing
+5. **What's been tried before?** — Avoids proposing rejected ideas
 
-**Optional context (ask if relevant):**
-- Timeline constraints or budget cycles
-- Competing priorities or organizational politics
-- Whether this is a first proposal or a follow-up to prior work
-- Preferred presentation format (screen share, printed, emailed)
+Optional: timeline/budget cycles, competing priorities, first vs follow-up, format preference.
 
-**HARD GATE:** Do not proceed to Step 2 until the user has answered at minimum questions 1-3.
-If the user says "just make it", push back once — the activation framing requires knowing the
-audience and the desired action. If they insist, use reasonable defaults and flag assumptions.
+**HARD GATE:** Minimum questions 1-3 answered before Step 2. Push back once if user says "just make it". If they insist, use defaults and flag assumptions.
 
 ### Step 2: Gather Source Material
 
-Read all referenced analysis files. These might be:
-- **JSON results** from analytical queries (enrollment rates, feature evaluations, etc.)
-- **Markdown docs** (analysis reports, implementation plans, benefit assessments)
-- **Conversation context** (the user may describe findings verbally)
-- **BQ query results** or data summaries
-
-Extract the key narrative elements:
-- **The problem**: What gap, blind spot, or limitation exists today?
-- **The evidence**: What data proves the problem and validates the solution?
+Read all referenced analysis files (JSON, markdown, BQ output, or conversation context). Extract these narrative elements because they form the slide's story arc:
+- **The problem**: What gap or limitation exists today?
+- **The evidence**: What data validates the solution?
 - **The solution**: What specific changes are proposed?
 - **The impact**: What measurable improvement is expected?
 - **The ask**: What does the client need to approve or fund?
 
+Verify all extracted numbers against the source data since misquoted metrics damage credibility.
+
 ### Step 3: Translate for the Audience
 
-Apply the language, attribution, and number rules from `references/language-rules.md`.
-Key principles: never use ML jargon (AUC, entropy, F1), replace "features" with "signals",
-use directional language instead of unvalidated accuracy numbers, and prefer rates over raw counts.
+Apply the language rules from `references/language-rules.md`. Remove all ML jargon (AUC, entropy, F1) because clients cannot act on abstract metrics. Replace "features" with "signals". Use directional language instead of accuracy numbers since unvalidated numbers erode trust. Verify all counts are deduplicated and prefer rates over raw counts.
 
 ### Step 4: Categorize Proposed Changes
 
@@ -109,22 +82,15 @@ Split proposed changes into two confidence tiers:
 - Include estimated hours AND what validation is needed
 - These are the "worth investigating" items — be honest about uncertainty
 
-This two-tier structure builds trust with the client: it shows analytical rigor rather than
-overselling everything as a sure thing. Items that clearly belong in "Optimisation" are those
-with quantified diagnostic evidence (e.g., enrollment gradients, coverage gap analysis). Items
-where the raw data is confounded, the sample is small, or the causal mechanism is unclear
-belong in "Explore."
+Use this two-tier structure because it builds trust — clients see analytical rigor rather than overselling. Verify each item's tier: "Optimisation" requires quantified diagnostic evidence; "Explore" is for confounded data, small samples, or unclear causal mechanisms.
 
 ### Step 5: Business Activation — "So What? Now What?"
 
-Every proposal must answer: **"What do I do Monday morning?"** for each stakeholder in the room.
-This is the most important differentiator from a generic technical report. Without activation
-framing, even the best analysis becomes shelf-ware.
+Define activation for every proposal item because without it, even the best analysis becomes shelf-ware. Every item must answer: **"What do I do Monday morning?"** for each stakeholder.
 
 **For each proposed improvement, define:**
 
-1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin",
-   "Enrollment marketing"). If nobody specific acts, the proposal is too abstract.
+1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin"). Specify a role because if nobody specific acts, the proposal is too abstract.
 2. **What changes in their workflow?** — Concrete operational shift. Not "better predictions"
    but "counselors receive a prioritized call list each morning sorted by enrollment likelihood,
    replacing the current alphabetical queue."
@@ -142,7 +108,7 @@ and placement guidance per version (detailed/minimal/bullet-point).
 
 ### Step 6: Design the Narrative Structure
 
-Organize content into a left-to-right story flow:
+Organize content into a left-to-right story flow. Use this layout because it maps to how decision-makers scan proposals:
 
 **Detailed version (3-column layout):**
 - Left: The problem/opportunity (what's broken or missing)
@@ -170,9 +136,7 @@ All versions must include:
 
 ### Step 7: Build the HTML (via `frontend-design` skill)
 
-Invoke the `frontend-design` skill for HTML generation. Pass it the constraints and layout
-specs from `references/html-build-specs.md`. Do not re-implement typography or visual
-design decisions — delegate those to `frontend-design`.
+Invoke `frontend-design` with constraints from `references/html-build-specs.md`. Delegate typography and visual design since this ensures consistent quality. Do not re-implement styling — call `frontend-design` because it produces distinctive, non-generic outputs.
 
 ### Step 8: Deliver Four Outputs
 
@@ -187,14 +151,11 @@ and `@media print` rules. Open all HTML versions in the browser for preview.
 
 ### Step 9: Accuracy Review (Optional but Recommended)
 
-When the deck makes verifiable claims against a codebase or data source, run the
-`agent-review-panel` skill to adversarially verify accuracy. Apply fixes across all
-three versions. See `references/accuracy-review.md` for trigger criteria and common
-over-claim patterns.
+Run `agent-review-panel` when the deck makes verifiable claims, because over-claims in client decks destroy credibility. Apply fixes across all three versions. See `references/accuracy-review.md` for trigger criteria.
 
 ### Step 10: Iterate on Feedback
 
-Client-facing materials require iteration. Common feedback patterns:
+Expect iteration on client-facing materials. Apply these common fixes:
 - "Too technical" → rewrite using the language rules above
 - "Can we add X section" → restructure the layout to accommodate
 - "Numbers don't look right" → verify deduplication and units
@@ -222,11 +183,6 @@ Before delivering, verify:
 - [ ] Renders cleanly at 1280x720
 - [ ] If deck references verifiable code/data: accuracy review panel run (Step 9)
 
-## Examples
-
-See `references/language-rules.md` for narrative framing examples (bad technical vs good client-friendly).
-See `references/activation-patterns.md` for activation framing examples.
-
 ## Input / Output Contract
 
 **Input:** Takes as input one or more of: JSON analysis results, markdown reports, BQ query output,
@@ -242,20 +198,14 @@ All outputs are self-contained HTML with inline styles. No external dependencies
 
 ## Error Handling
 
-- If source data files are empty or missing, ask the user to provide data before proceeding.
-  Do not generate slides with fabricated content.
-- If the `frontend-design` skill is unavailable, fall back to inline CSS styling. The output
-  will be functional but less visually polished. Log a warning.
-- If Chrome headless fails for PDF generation, skip the PDF and inform the user. The three
-  HTML files are the primary deliverables.
-- If discovery questions are skipped, proceed with reasonable defaults and flag all assumptions
-  explicitly in the output.
+- If source data is empty or missing, ask the user to provide data. Do not generate slides with fabricated content because this erodes client trust.
+- If `frontend-design` is unavailable, fall back to inline CSS. Log a warning since the output will be less polished.
+- If Chrome headless fails for PDF, skip PDF and inform user. The HTML files are the primary deliverables.
+- If discovery is skipped, use reasonable defaults and flag assumptions explicitly.
 
 ## Safety & Idempotency
 
-This skill is safe to re-run multiple times. Each run produces new output files without
-modifying existing files. Running again with the same input produces equivalent output.
-No side effects beyond file creation.
+Safe to re-run because each invocation creates new output files without modifying existing ones. No side effects beyond file creation. This means running again with updated data produces a fresh set without losing previous versions.
 
 ## Composability & Handoff
 
