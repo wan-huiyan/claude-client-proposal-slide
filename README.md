@@ -182,6 +182,10 @@ The skill enforces these checks before delivery:
 | 2.1.0 | Adversarial accuracy review via agent-review-panel |
 | 2.0.0 | Initial release |
 
+## Acknowledgements
+
+Trigger accuracy and eval suite improved using [schliff](https://github.com/Zandereins/schliff) — an autonomous skill scoring and improvement framework (composite score: 64 → 89).
+
 ## License
 
 MIT
