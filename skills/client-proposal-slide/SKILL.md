@@ -61,18 +61,14 @@ Optional: timeline/budget cycles, competing priorities, first vs follow-up, form
 
 ### Step 2: Gather Source Material
 
-Read all referenced analysis files. These might be:
-- **JSON results** from analytical queries (enrollment rates, feature evaluations, etc.)
-- **Markdown docs** (analysis reports, implementation plans, benefit assessments)
-- **Conversation context** (the user may describe findings verbally)
-- **BQ query results** or data summaries
-
-Extract the key narrative elements:
-- **The problem**: What gap, blind spot, or limitation exists today?
-- **The evidence**: What data proves the problem and validates the solution?
+Read all referenced analysis files (JSON, markdown, BQ output, or conversation context). Extract these narrative elements because they form the slide's story arc:
+- **The problem**: What gap or limitation exists today?
+- **The evidence**: What data validates the solution?
 - **The solution**: What specific changes are proposed?
 - **The impact**: What measurable improvement is expected?
 - **The ask**: What does the client need to approve or fund?
+
+Verify all extracted numbers against the source data since misquoted metrics damage credibility.
 
 ### Step 3: Translate for the Audience
 
@@ -119,7 +115,7 @@ and placement guidance per version (detailed/minimal/bullet-point).
 
 ### Step 6: Design the Narrative Structure
 
-Organize content into a left-to-right story flow:
+Organize content into a left-to-right story flow. Use this layout because it maps to how decision-makers scan proposals:
 
 **Detailed version (3-column layout):**
 - Left: The problem/opportunity (what's broken or missing)
@@ -166,7 +162,7 @@ Run `agent-review-panel` when the deck makes verifiable claims, because over-cla
 
 ### Step 10: Iterate on Feedback
 
-Client-facing materials require iteration. Common feedback patterns:
+Expect iteration on client-facing materials. Apply these common fixes:
 - "Too technical" → rewrite using the language rules above
 - "Can we add X section" → restructure the layout to accommodate
 - "Numbers don't look right" → verify deduplication and units
