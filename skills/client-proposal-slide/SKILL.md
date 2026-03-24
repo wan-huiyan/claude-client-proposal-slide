@@ -9,8 +9,9 @@ description: |
   trigger when the user says "design a slide", "make a PPT", "client presentation", "propose
   to the client", "present findings to stakeholders", "turn analysis into a deck",
   "summarize for the VP", "build a proposal deck", "translate technical results for the client",
-  "create a one-pager for the client", "make an HTML slide", or wants to summarize technical
-  analysis for stakeholder buy-in. Produces three HTML versions (detailed, minimal, bullet-point)
+  "create a one-pager for the client", "make an HTML slide", "present findings to the VP",
+  "present to the admissions team", or wants to summarize technical analysis for stakeholder
+  buy-in. Produces three HTML versions (detailed, minimal, bullet-point)
   plus a PDF with proper page breaks. Translates technical ML jargon into client-friendly language.
   Splits proposed changes into "Model Optimisation" (high-confidence) and "Areas We Could Explore"
   (needs validation) with estimated hours. Every proposal item includes business activation — who
