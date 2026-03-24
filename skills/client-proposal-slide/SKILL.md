@@ -90,8 +90,7 @@ Define activation for every proposal item because without it, even the best anal
 
 **For each proposed improvement, define:**
 
-1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin",
-   "Enrollment marketing"). If nobody specific acts, the proposal is too abstract.
+1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin"). Specify a role because if nobody specific acts, the proposal is too abstract.
 2. **What changes in their workflow?** — Concrete operational shift. Not "better predictions"
    but "counselors receive a prioritized call list each morning sorted by enrollment likelihood,
    replacing the current alphabetical queue."
@@ -206,9 +205,7 @@ All outputs are self-contained HTML with inline styles. No external dependencies
 
 ## Safety & Idempotency
 
-This skill is safe to re-run multiple times. Each run produces new output files without
-modifying existing files. Running again with the same input produces equivalent output.
-No side effects beyond file creation.
+Safe to re-run because each invocation creates new output files without modifying existing ones. No side effects beyond file creation. This means running again with updated data produces a fresh set without losing previous versions.
 
 ## Composability & Handoff
 
