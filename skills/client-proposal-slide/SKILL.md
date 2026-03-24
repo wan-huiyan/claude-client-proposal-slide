@@ -47,32 +47,17 @@ into client-friendly proposals. The output is a self-contained HTML file at 16:9
 
 ### Step 1: Discovery & Context (Brainstorming Phase)
 
-Before building anything, invoke the `brainstorming` skill mindset to understand what the user
-actually needs. Ask clarifying questions **one at a time** to fill in gaps. Do NOT proceed to
-slide creation until you have clear answers on these dimensions:
+Ask clarifying questions **one at a time** before building. Required context:
 
-**Required context (ask if not provided):**
-1. **Who is in the room?** — Job titles, decision-making authority, technical literacy level.
-   A VP of Enrollment thinks differently than a CIO. Tailor language and emphasis accordingly.
-2. **What decision does this need to drive?** — Budget approval? Prioritization? Buy-in for
-   a pilot? "Informational" is not a valid answer — every proposal needs an ask.
-3. **What can they actually do with this?** — Which teams will act on the insights? What
-   existing workflows or tools will change? If you can't name concrete actions, the proposal
-   is too abstract.
-4. **What's the status quo cost?** — What happens if they do nothing? Lost revenue, missed
-   students, operational blind spots? Quantify inaction.
-5. **What has been tried before?** — Prior initiatives, vendor tools, or internal projects
-   in this space. Avoids proposing something they've already rejected.
+1. **Who is in the room?** — Job titles, decision authority, technical literacy
+2. **What decision does this drive?** — Budget approval, prioritization, pilot buy-in ("informational" is not valid)
+3. **What can they do with this?** — Which teams act, what workflows change
+4. **Status quo cost?** — Quantify what happens if they do nothing
+5. **What's been tried before?** — Avoids proposing rejected ideas
 
-**Optional context (ask if relevant):**
-- Timeline constraints or budget cycles
-- Competing priorities or organizational politics
-- Whether this is a first proposal or a follow-up to prior work
-- Preferred presentation format (screen share, printed, emailed)
+Optional: timeline/budget cycles, competing priorities, first vs follow-up, format preference.
 
-**HARD GATE:** Do not proceed to Step 2 until the user has answered at minimum questions 1-3.
-If the user says "just make it", push back once — the activation framing requires knowing the
-audience and the desired action. If they insist, use reasonable defaults and flag assumptions.
+**HARD GATE:** Minimum questions 1-3 answered before Step 2. Push back once if user says "just make it". If they insist, use defaults and flag assumptions.
 
 ### Step 2: Gather Source Material
 
