@@ -76,9 +76,7 @@ Extract the key narrative elements:
 
 ### Step 3: Translate for the Audience
 
-Apply the language, attribution, and number rules from `references/language-rules.md`.
-Key principles: never use ML jargon (AUC, entropy, F1), replace "features" with "signals",
-use directional language instead of unvalidated accuracy numbers, and prefer rates over raw counts.
+Apply the language rules from `references/language-rules.md`. Remove all ML jargon (AUC, entropy, F1) because clients cannot act on abstract metrics. Replace "features" with "signals". Use directional language instead of accuracy numbers since unvalidated numbers erode trust. Verify all counts are deduplicated and prefer rates over raw counts.
 
 ### Step 4: Categorize Proposed Changes
 
@@ -94,17 +92,11 @@ Split proposed changes into two confidence tiers:
 - Include estimated hours AND what validation is needed
 - These are the "worth investigating" items — be honest about uncertainty
 
-This two-tier structure builds trust with the client: it shows analytical rigor rather than
-overselling everything as a sure thing. Items that clearly belong in "Optimisation" are those
-with quantified diagnostic evidence (e.g., enrollment gradients, coverage gap analysis). Items
-where the raw data is confounded, the sample is small, or the causal mechanism is unclear
-belong in "Explore."
+Use this two-tier structure because it builds trust — clients see analytical rigor rather than overselling. Verify each item's tier: "Optimisation" requires quantified diagnostic evidence; "Explore" is for confounded data, small samples, or unclear causal mechanisms.
 
 ### Step 5: Business Activation — "So What? Now What?"
 
-Every proposal must answer: **"What do I do Monday morning?"** for each stakeholder in the room.
-This is the most important differentiator from a generic technical report. Without activation
-framing, even the best analysis becomes shelf-ware.
+Define activation for every proposal item because without it, even the best analysis becomes shelf-ware. Every item must answer: **"What do I do Monday morning?"** for each stakeholder.
 
 **For each proposed improvement, define:**
 
@@ -155,9 +147,7 @@ All versions must include:
 
 ### Step 7: Build the HTML (via `frontend-design` skill)
 
-Invoke the `frontend-design` skill for HTML generation. Pass it the constraints and layout
-specs from `references/html-build-specs.md`. Do not re-implement typography or visual
-design decisions — delegate those to `frontend-design`.
+Invoke `frontend-design` with constraints from `references/html-build-specs.md`. Delegate typography and visual design since this ensures consistent quality. Do not re-implement styling — call `frontend-design` because it produces distinctive, non-generic outputs.
 
 ### Step 8: Deliver Four Outputs
 
@@ -172,10 +162,7 @@ and `@media print` rules. Open all HTML versions in the browser for preview.
 
 ### Step 9: Accuracy Review (Optional but Recommended)
 
-When the deck makes verifiable claims against a codebase or data source, run the
-`agent-review-panel` skill to adversarially verify accuracy. Apply fixes across all
-three versions. See `references/accuracy-review.md` for trigger criteria and common
-over-claim patterns.
+Run `agent-review-panel` when the deck makes verifiable claims, because over-claims in client decks destroy credibility. Apply fixes across all three versions. See `references/accuracy-review.md` for trigger criteria.
 
 ### Step 10: Iterate on Feedback
 
@@ -227,14 +214,10 @@ All outputs are self-contained HTML with inline styles. No external dependencies
 
 ## Error Handling
 
-- If source data files are empty or missing, ask the user to provide data before proceeding.
-  Do not generate slides with fabricated content.
-- If the `frontend-design` skill is unavailable, fall back to inline CSS styling. The output
-  will be functional but less visually polished. Log a warning.
-- If Chrome headless fails for PDF generation, skip the PDF and inform the user. The three
-  HTML files are the primary deliverables.
-- If discovery questions are skipped, proceed with reasonable defaults and flag all assumptions
-  explicitly in the output.
+- If source data is empty or missing, ask the user to provide data. Do not generate slides with fabricated content because this erodes client trust.
+- If `frontend-design` is unavailable, fall back to inline CSS. Log a warning since the output will be less polished.
+- If Chrome headless fails for PDF, skip PDF and inform user. The HTML files are the primary deliverables.
+- If discovery is skipped, use reasonable defaults and flag assumptions explicitly.
 
 ## Safety & Idempotency
 
