@@ -31,6 +31,11 @@ The skill auto-triggers when you say things like:
 - "Make a slide proposing the model improvements to the client"
 - "Create a presentation summarizing the analysis results"
 - "Design a deck for the stakeholder meeting"
+- "Design a slide" / "make a PPT" / "propose to the client"
+- "Present findings to stakeholders" / "turn analysis into a deck"
+- "Summarize for the VP" / "build a proposal deck"
+- "Translate technical results for the client" / "create a one-pager for the client"
+- "Make an HTML slide"
 
 ## Installation
 
@@ -177,10 +182,15 @@ The skill enforces these checks before delivery:
 
 | Version | Changes |
 |---------|---------|
+| 3.2.0 | Enrich trigger description, add eval suite, add composability metadata (schliff score: 64 → 89) |
 | 3.1.0 | Added PDF output with `@media print` page break rules, demo screenshot |
 | 3.0.0 | Brainstorming discovery phase, business activation section, frontend-design delegation |
 | 2.1.0 | Adversarial accuracy review via agent-review-panel |
 | 2.0.0 | Initial release |
+
+## Acknowledgements
+
+Trigger accuracy and eval suite improved using [schliff](https://github.com/Zandereins/schliff) — an autonomous skill scoring and improvement framework (composite score: 64 → 89).
 
 ## License
 
