@@ -37,13 +37,6 @@ Create compelling, single-slide HTML presentations that translate technical ML/d
 into client-friendly proposals. The output is a self-contained HTML file at 16:9 aspect ratio
 (1280x720px) that can be opened in a browser, screenshotted for PowerPoint, or printed to PDF.
 
-## When This Skill Activates
-
-- User wants to propose model improvements or new features to a client
-- User has analysis results (JSON, markdown, BQ output, or conversation context) to visualize
-- User needs to communicate technical findings to non-technical stakeholders
-- User asks for a "slide", "deck", "presentation", or "proposal"
-
 ## Process
 
 ### Step 1: Discovery & Context (Brainstorming Phase)
