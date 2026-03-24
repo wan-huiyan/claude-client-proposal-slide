@@ -61,33 +61,69 @@ Optional: timeline/budget cycles, competing priorities, first vs follow-up, form
 
 ### Step 2: Gather Source Material
 
-Read all referenced files (JSON, markdown, BQ output, or conversation context). Extract: **problem** (gap/limitation), **evidence** (data proving it), **solution** (proposed changes), **impact** (measurable improvement), **ask** (what to approve/fund).
+Read all referenced analysis files. These might be:
+- **JSON results** from analytical queries (enrollment rates, feature evaluations, etc.)
+- **Markdown docs** (analysis reports, implementation plans, benefit assessments)
+- **Conversation context** (the user may describe findings verbally)
+- **BQ query results** or data summaries
+
+Extract the key narrative elements:
+- **The problem**: What gap, blind spot, or limitation exists today?
+- **The evidence**: What data proves the problem and validates the solution?
+- **The solution**: What specific changes are proposed?
+- **The impact**: What measurable improvement is expected?
+- **The ask**: What does the client need to approve or fund?
 
 ### Step 3: Translate for the Audience
 
-Apply rules from `references/language-rules.md`: no ML jargon (AUC, entropy, F1), replace "features" with "signals", use directional language instead of accuracy numbers, prefer rates over raw counts.
+Apply the language, attribution, and number rules from `references/language-rules.md`.
+Key principles: never use ML jargon (AUC, entropy, F1), replace "features" with "signals",
+use directional language instead of unvalidated accuracy numbers, and prefer rates over raw counts.
 
 ### Step 4: Categorize Proposed Changes
 
-Split into two confidence tiers:
+Split proposed changes into two confidence tiers:
 
-**"Model Optimisation"** — High-confidence, backed by diagnostic evidence. Include estimated hours. These are "we know this will help" items.
+**"Model Optimisation"** — High-confidence improvements backed by diagnostic evidence:
+- Items where analysis has already demonstrated clear value (e.g., enrollment gradient, coverage gaps quantified)
+- Include estimated implementation hours for each item
+- These are the "we know this will help" items
 
-**"Areas We Could Explore"** — Directionally promising but needs validation. Include estimated hours AND what validation is needed. Be honest about uncertainty.
+**"Areas We Could Explore"** — Directionally promising but with unknowns that need validation:
+- Items where the signal looks good but has confounders, limited data, or needs further investigation
+- Include estimated hours AND what validation is needed
+- These are the "worth investigating" items — be honest about uncertainty
 
-This two-tier structure builds trust by showing analytical rigor rather than overselling.
+This two-tier structure builds trust with the client: it shows analytical rigor rather than
+overselling everything as a sure thing. Items that clearly belong in "Optimisation" are those
+with quantified diagnostic evidence (e.g., enrollment gradients, coverage gap analysis). Items
+where the raw data is confounded, the sample is small, or the causal mechanism is unclear
+belong in "Explore."
 
 ### Step 5: Business Activation — "So What? Now What?"
 
-Every proposal must answer **"What do I do Monday morning?"** for each stakeholder. For each improvement, define:
+Every proposal must answer: **"What do I do Monday morning?"** for each stakeholder in the room.
+This is the most important differentiator from a generic technical report. Without activation
+framing, even the best analysis becomes shelf-ware.
 
-1. **Who acts?** — Name the team/role
-2. **What changes in their workflow?** — Concrete operational shift (not "better predictions" but "prioritized call list replacing alphabetical queue")
-3. **Trigger** — When does it kick in? (daily report, dashboard alert, CRM update)
-4. **Behavioral change** — How actions differ from today
-5. **Success metric** — Observable business KPI (not model accuracy)
+**For each proposed improvement, define:**
 
-See `references/activation-patterns.md` for patterns, anti-patterns, and placement guidance.
+1. **Who acts on this?** — Name the team/role (e.g., "Admissions counselors", "IT/CRM admin",
+   "Enrollment marketing"). If nobody specific acts, the proposal is too abstract.
+2. **What changes in their workflow?** — Concrete operational shift. Not "better predictions"
+   but "counselors receive a prioritized call list each morning sorted by enrollment likelihood,
+   replacing the current alphabetical queue."
+3. **What's the trigger?** — When does this kick in? Daily report? Dashboard alert? CRM field
+   update? Automated email? Be specific about the delivery mechanism.
+4. **What's the expected behavioral change?** — How will the stakeholder's actions differ from
+   today? "Instead of calling all 500 admitted students equally, focus on the 120 flagged as
+   at-risk of not enrolling."
+5. **How will we know it's working?** — Observable success metric the stakeholder can track
+   themselves (not model accuracy — business KPIs). E.g., "yield rate for contacted at-risk
+   students vs. control group."
+
+See `references/activation-patterns.md` for common activation patterns, anti-patterns,
+and placement guidance per version (detailed/minimal/bullet-point).
 
 ### Step 6: Design the Narrative Structure
 
@@ -103,38 +139,70 @@ Organize content into a left-to-right story flow:
 - Right: Proposed changes (using the two-tier structure)
 
 **Bullet-point version (plain text layout):**
-- Minimal styling, white background, standard fonts. Context at top → "Model Optimisation" bullets → "Areas We Could Explore" bullets. Each bullet: item name, one-line description, estimated hours.
+- Clean, simple slide with minimal styling — for stakeholders who prefer traditional decks
+- White/light background, standard fonts acceptable, no charts or bars
+- Organized as: brief context at top, then "Model Optimisation" bullets, then "Areas We Could Explore" bullets
+- Each bullet includes the item name, a one-line description, and estimated hours
+- Footer with implementation reassurances
 
-All versions require: narrative title (not technical label), client branding header, implementation reassurance footer, prominent primary recommendation callout, estimated hours per item.
+All versions must include:
+- A clear, non-technical title that captures the narrative (e.g., "Unlocking Untapped Admissions Data" not "Salesforce Feature Expansion")
+- Company/client branding in the header
+- A footer with implementation reassurances (single release, data validated, etc.)
+- Key statistics as large, bold callouts (detailed/minimal) or inline numbers (bullet-point)
+- A visually prominent callout for the primary recommendation
+- Estimated hours per item in the proposed changes section
 
 ### Step 7: Build the HTML (via `frontend-design` skill)
 
-Invoke `frontend-design` for HTML generation with specs from `references/html-build-specs.md`. Delegate typography and visual design.
+Invoke the `frontend-design` skill for HTML generation. Pass it the constraints and layout
+specs from `references/html-build-specs.md`. Do not re-implement typography or visual
+design decisions — delegate those to `frontend-design`.
 
 ### Step 8: Deliver Four Outputs
 
-1. `[name]_slide.html` — Detailed 3-column version
-2. `[name]_slide_minimal.html` — 2-column version (~40% less text)
-3. `[name]_slide_bullets.html` — Plain bullet-point version
-4. `[name]_slide.pdf` — Print-ready PDF (see `references/html-build-specs.md` for Chrome/puppeteer commands)
+Generate all four files:
+1. `[name]_slide.html` — Detailed 3-column version with full evidence and activation
+2. `[name]_slide_minimal.html` — 2-column version with ~40% less text
+3. `[name]_slide_bullets.html` — Plain bullet-point version, minimal styling
+4. `[name]_slide.pdf` — Print-ready PDF from detailed HTML
 
-### Step 9: Accuracy Review (Optional)
+See `references/html-build-specs.md` for PDF generation commands (Chrome headless or puppeteer)
+and `@media print` rules. Open all HTML versions in the browser for preview.
 
-Run `agent-review-panel` when deck makes verifiable claims. See `references/accuracy-review.md`.
+### Step 9: Accuracy Review (Optional but Recommended)
+
+When the deck makes verifiable claims against a codebase or data source, run the
+`agent-review-panel` skill to adversarially verify accuracy. Apply fixes across all
+three versions. See `references/accuracy-review.md` for trigger criteria and common
+over-claim patterns.
 
 ### Step 10: Iterate on Feedback
 
-Common patterns: "Too technical" → apply language rules; "Numbers wrong" → verify deduplication; "Too busy" → simplify to minimal version; "Make X prominent" → accent colors/callout box.
+Client-facing materials require iteration. Common feedback patterns:
+- "Too technical" → rewrite using the language rules above
+- "Can we add X section" → restructure the layout to accommodate
+- "Numbers don't look right" → verify deduplication and units
+- "Too busy" → move details to the minimal version, simplify the detailed one
+- "Make X more prominent" → use accent colors, larger fonts, or a callout box
 
 ## Quality Checklist
 
-- [ ] Discovery questions 1-3 answered
-- [ ] No ML jargon (AUC, entropy, F1, precision, recall, log-odds, calibration)
-- [ ] No unvalidated accuracy claims; cautious attribution for disagreements
-- [ ] Two-tier structure ("Model Optimisation" + "Areas We Could Explore") with hours
-- [ ] Business activation defined per item (who acts, what changes, success metric)
-- [ ] All three HTML versions + PDF produced; renders at 1280x720
-- [ ] Narrative title, client branding, implementation reassurance footer
+Before delivering, verify:
+- [ ] Discovery questions answered (Step 1) — audience, decision, activation identified
+- [ ] No ML jargon (AUC, entropy, precision, recall, F1, log-odds, calibration)
+- [ ] No unvalidated accuracy claims
+- [ ] All counts verified for deduplication
+- [ ] Cautious attribution for data source disagreements
+- [ ] Title tells a story (not a technical label)
+- [ ] Primary recommendation is visually prominent
+- [ ] Proposed changes split into "Model Optimisation" and "Areas We Could Explore"
+- [ ] Estimated hours included for each proposed item
+- [ ] **Business activation defined** — each proposal item has: who acts, what changes, success metric
+- [ ] **No orphan proposals** — every item answers "what does the stakeholder do differently Monday morning?"
+- [ ] All three HTML versions produced (detailed, minimal, bullet-point)
+- [ ] PDF version generated with proper page breaks (no content cut off mid-page)
+- [ ] Footer includes implementation reassurances
 - [ ] HTML built via `frontend-design` skill (not generic templates)
 - [ ] Renders cleanly at 1280x720
 - [ ] If deck references verifiable code/data: accuracy review panel run (Step 9)
