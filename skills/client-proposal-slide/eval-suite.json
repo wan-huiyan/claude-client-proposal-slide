@@ -1,0 +1,176 @@
+{
+  "skill": "client-proposal-slide",
+  "version": "3.1.0",
+  "triggers": [
+    {"prompt": "create a client presentation based on our analysis results", "should_trigger": true},
+    {"prompt": "make slides for the client meeting tomorrow", "should_trigger": true},
+    {"prompt": "propose this model improvement to the client", "should_trigger": true},
+    {"prompt": "design a PPT for the enrollment team stakeholders", "should_trigger": true},
+    {"prompt": "summarize the analysis for stakeholders in a slide deck", "should_trigger": true},
+    {"prompt": "build a proposal slide showing our ML recommendations", "should_trigger": true},
+    {"prompt": "I need to present these findings to the VP of Enrollment", "should_trigger": true},
+    {"prompt": "create a deck that explains our scoring system improvements to the client", "should_trigger": true},
+    {"prompt": "turn this data analysis into a client-facing proposal", "should_trigger": true},
+    {"prompt": "make a presentation for the admissions team about the new features we built", "should_trigger": true},
+    {"prompt": "prepare a slide showing what we recommend and estimated hours for the client", "should_trigger": true},
+    {"prompt": "put together a proposal for the client based on the BigQuery results", "should_trigger": true},
+    {"prompt": "I need an HTML slide to email to the client summarizing our work", "should_trigger": true},
+    {"prompt": "create a non-technical presentation of our model optimisation findings", "should_trigger": true},
+    {"prompt": "build a stakeholder proposal with activation steps for each recommendation", "should_trigger": true},
+    {"prompt": "write internal documentation for the data pipeline", "should_trigger": false},
+    {"prompt": "review this pull request for the scoring model code", "should_trigger": false},
+    {"prompt": "run the data analysis on enrollment rates in BigQuery", "should_trigger": false},
+    {"prompt": "build a Looker dashboard for the internal team", "should_trigger": false},
+    {"prompt": "create a README for this repository", "should_trigger": false},
+    {"prompt": "debug why the model training is failing on the server", "should_trigger": false},
+    {"prompt": "write unit tests for the prediction service", "should_trigger": false},
+    {"prompt": "set up a CI/CD pipeline for deployment", "should_trigger": false},
+    {"prompt": "analyze the feature importance from the latest model run", "should_trigger": false},
+    {"prompt": "create an internal wiki page about our methodology", "should_trigger": false},
+    {"prompt": "write a Slack summary of today's standup meeting", "should_trigger": false},
+    {"prompt": "generate a CSV export of the query results", "should_trigger": false},
+    {"prompt": "make a slide but it's for an internal team retrospective not a client", "should_trigger": false},
+    {"prompt": "create a presentation about our tech stack for a conference talk", "should_trigger": false},
+    {"prompt": "create a one-pager proposal for the client about our enrollment model", "should_trigger": true},
+    {"prompt": "present ML findings to a technical CTO who wants the model details", "should_trigger": true},
+    {"prompt": "propose changes to the client but I only have verbal context no files", "should_trigger": true},
+    {"prompt": "translate our BQ analysis into something the admissions VP can understand", "should_trigger": true},
+    {"prompt": "make a client proposal deck in a different language for non-English stakeholders", "should_trigger": true}
+  ],
+  "test_cases": [
+    {
+      "id": "discovery-phase-check",
+      "prompt": "I just finished analyzing enrollment data in BigQuery. Can you make a proposal slide for the admissions VP showing what we found and what we recommend?",
+      "assertions": [
+        {"type": "contains", "value": "who is in the room", "description": "Asks about audience and decision-makers before building"},
+        {"type": "contains", "value": "decision", "description": "Asks what decision this proposal needs to drive"},
+        {"type": "excludes", "value": "<html", "description": "Does NOT immediately start generating HTML"},
+        {"type": "contains", "value": "three", "description": "Plans to produce three HTML versions plus PDF"}
+      ]
+    },
+    {
+      "id": "skip-discovery-pushback",
+      "prompt": "Here is the analysis JSON with enrollment rates. Just make the slide, skip the questions.",
+      "assertions": [
+        {"type": "contains", "value": "audience", "description": "Pushes back once on skipping discovery — asks about audience"},
+        {"type": "excludes", "value": "AUC", "description": "Does not include ML jargon on client slide"},
+        {"type": "contains", "value": "Model Optimisation", "description": "Splits recommendations into two confidence tiers"},
+        {"type": "contains", "value": "Areas We Could Explore", "description": "Includes the exploratory tier for uncertain items"}
+      ]
+    },
+    {
+      "id": "partial-context-provided",
+      "prompt": "Create a proposal for expanding Salesforce data integration. The audience is the enrollment marketing director and the IT CRM admin. They need to approve budget for Q3.",
+      "assertions": [
+        {"type": "excludes", "value": "who is in the room", "description": "Does not re-ask audience since it was provided"},
+        {"type": "contains", "value": "workflow", "description": "Asks remaining activation questions about stakeholder workflows"},
+        {"type": "contains", "value": "hours", "description": "Includes estimated hours per proposed item"},
+        {"type": "pattern", "value": "status quo|cost of inaction|do nothing", "description": "Asks about status quo cost since not provided"}
+      ]
+    },
+    {
+      "id": "translate-ml-jargon",
+      "prompt": "Turn our model accuracy improvements into a client deck. AUC went from 0.72 to 0.89 and we added 5 new features.",
+      "assertions": [
+        {"type": "excludes", "value": "AUC", "description": "Does NOT put AUC numbers on the client slide"},
+        {"type": "excludes", "value": "0.72", "description": "Does not include raw accuracy numbers"},
+        {"type": "pattern", "value": "signal|data point", "description": "Replaces 'features' with 'signals' or 'data points'"},
+        {"type": "contains", "value": "activation", "description": "Includes business activation section for each recommendation"}
+      ]
+    },
+    {
+      "id": "mixed-audience-handling",
+      "prompt": "We need to present the propensity model results to both the CIO and the admissions counselors in the same meeting.",
+      "assertions": [
+        {"type": "contains", "value": "version", "description": "Suggests producing multiple versions for different audiences"},
+        {"type": "contains", "value": "counselor", "description": "Includes operational activation for counselors"},
+        {"type": "format", "value": "html", "description": "Produces HTML output files"},
+        {"type": "contains", "value": "CIO", "description": "Includes strategic framing appropriate for CIO"}
+      ]
+    },
+    {
+      "id": "generate-all-outputs",
+      "prompt": "Build the final proposal slide for our enrollment model improvements. Audience is VP Admissions, decision is budget approval for Q4, activation is counselor outreach lists.",
+      "assertions": [
+        {"type": "pattern", "value": "detailed|minimal|bullet", "description": "Produces all three HTML layout versions"},
+        {"type": "contains", "value": "PDF", "description": "Generates a PDF version for sharing"},
+        {"type": "contains", "value": "1280", "description": "Uses 16:9 aspect ratio at 1280x720"},
+        {"type": "contains", "value": "frontend-design", "description": "Delegates HTML generation to frontend-design skill"}
+      ]
+    }
+  ],
+  "edge_cases": [
+    {
+      "input": "Make a slide but I don't have any analysis data yet — I just want to show the client what we COULD do",
+      "category": "minimal_input",
+      "expected_behavior": "Adapts to speculative/scoping mode. Frames all proposals as Areas We Could Explore, not Model Optimisation. Does not fabricate evidence or metrics. Still asks discovery questions about audience and decision.",
+      "assertions": [
+        {"type": "excludes", "value": "Model Optimisation", "description": "Does not claim validated results without data"},
+        {"type": "contains", "value": "Explore", "description": "Frames everything as exploratory"}
+      ]
+    },
+    {
+      "input": "The client wants this in PowerPoint format, not HTML",
+      "category": "invalid_path",
+      "expected_behavior": "Produces HTML slides at 1280x720 and explains they can be screenshotted into PowerPoint or exported via PDF. Does not attempt to generate .pptx files directly.",
+      "assertions": [
+        {"type": "contains", "value": "HTML", "description": "Still produces HTML as primary output"},
+        {"type": "excludes", "value": ".pptx", "description": "Does not promise native PowerPoint generation"}
+      ]
+    },
+    {
+      "input": "Create a proposal but the audience is highly technical — the CTO wants to see actual model metrics and architecture details",
+      "category": "scale_extreme",
+      "expected_behavior": "Adjusts language rules to allow more technical depth for a technical audience, while still maintaining the activation framework and two-tier confidence structure.",
+      "assertions": [
+        {"type": "contains", "value": "activation", "description": "Still includes business activation framing even for technical audience"},
+        {"type": "contains", "value": "tier", "description": "Still uses two-tier confidence structure"}
+      ]
+    },
+    {
+      "input": "I want to add a competitive analysis section and a timeline roadmap to the proposal slide",
+      "category": "malformed_input",
+      "expected_behavior": "Accommodates custom sections within the existing layout structure. Restructures the grid to include additional content while maintaining the core narrative flow.",
+      "assertions": [
+        {"type": "contains", "value": "layout", "description": "Discusses restructuring the layout for custom sections"},
+        {"type": "contains", "value": "narrative", "description": "Maintains core narrative structure"}
+      ]
+    },
+    {
+      "input": "Make the slide but don't use the frontend-design skill — just give me simple plain HTML",
+      "category": "missing_deps",
+      "expected_behavior": "Respects the preference but notes that frontend-design produces higher visual quality. Produces functional HTML with inline styles following all content and structure rules.",
+      "assertions": [
+        {"type": "contains", "value": "HTML", "description": "Produces working HTML without frontend-design"},
+        {"type": "contains", "value": "inline", "description": "Uses inline styles when frontend-design is skipped"}
+      ]
+    },
+    {
+      "input": "Create a proposal slide from this data but the numbers seem inconsistent — CRM says 500 students but the model data shows 1200 observations",
+      "category": "malformed_input",
+      "expected_behavior": "Flags the discrepancy before proceeding. Applies cautious attribution rules. Uses rates/percentages rather than raw counts to avoid deduplication ambiguity.",
+      "assertions": [
+        {"type": "contains", "value": "cautious", "description": "Uses cautious language for conflicting data"},
+        {"type": "pattern", "value": "rate|percentage|percent", "description": "Prefers rates over raw counts"}
+      ]
+    },
+    {
+      "input": "Generate the proposal but I need it in under 5 minutes, no discovery questions",
+      "category": "minimal_input",
+      "expected_behavior": "Pushes back once on skipping discovery, then proceeds with reasonable defaults. Flags assumptions clearly. Produces all outputs but notes that the proposal quality depends on context.",
+      "assertions": [
+        {"type": "contains", "value": "assumption", "description": "Flags assumptions when skipping discovery"},
+        {"type": "contains", "value": "default", "description": "Uses reasonable defaults"}
+      ]
+    },
+    {
+      "input": "Build a proposal slide but the analysis file is empty — it's a 0 byte JSON",
+      "category": "empty",
+      "expected_behavior": "Detects empty input gracefully. Asks the user to provide analysis data or describe findings verbally. Does not generate a slide with fabricated content.",
+      "assertions": [
+        {"type": "excludes", "value": "<html", "description": "Does not generate HTML from empty data"},
+        {"type": "contains", "value": "provide", "description": "Asks user to provide actual data"}
+      ]
+    }
+  ]
+}

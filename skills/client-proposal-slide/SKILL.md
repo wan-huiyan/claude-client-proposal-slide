@@ -7,14 +7,27 @@ description: |
   Use this skill whenever the user asks to create a presentation, slide, deck, or proposal
   for a client based on analysis results, model improvements, or data project findings. Also
   trigger when the user says "design a slide", "make a PPT", "client presentation", "propose
-  to the client", or wants to summarize technical analysis for stakeholder buy-in. Always
-  produces three HTML versions (detailed, minimal, bullet-point) plus a PDF with proper
-  page breaks. Automatically translates technical ML jargon into
-  client-friendly language. Splits proposed changes into "Model Optimisation" (high-confidence)
-  and "Areas We Could Explore" (needs validation) with estimated hours. Every proposal item
-  includes business activation — who acts, what changes in their workflow, and how success is
-  measured. Delegates HTML generation to the frontend-design skill for distinctive visual quality.
-version: 3.1.0
+  to the client", "present findings to stakeholders", "turn analysis into a deck",
+  "summarize for the VP", "build a proposal deck", "translate technical results for the client",
+  "create a one-pager for the client", "make an HTML slide", or wants to summarize technical
+  analysis for stakeholder buy-in. Produces three HTML versions (detailed, minimal, bullet-point)
+  plus a PDF with proper page breaks. Translates technical ML jargon into client-friendly language.
+  Splits proposed changes into "Model Optimisation" (high-confidence) and "Areas We Could Explore"
+  (needs validation) with estimated hours. Every proposal item includes business activation — who
+  acts, what changes in their workflow, and how success is measured.
+  NOT for: internal documentation, code review, data analysis, building dashboards, writing READMEs,
+  CI/CD setup, model debugging, unit testing, or any non-client-facing deliverable.
+  Do not use for conference talks, internal retros, or wiki pages.
+version: 3.2.0
+dependencies:
+  required:
+    - frontend-design skill (for HTML generation)
+  optional:
+    - brainstorming skill (for discovery phase)
+    - agent-review-panel skill (for accuracy review)
+    - Google Chrome or puppeteer (for PDF generation)
+compatible_with: "Claude Code v1.0+"
+namespace: client-proposal-slide
 ---
 
 # Client Proposal Slide Generator
@@ -78,26 +91,9 @@ Extract the key narrative elements:
 
 ### Step 3: Translate for the Audience
 
-The audience is non-technical. Apply these principles rigorously:
-
-**Language rules:**
-- Never use: AUC, entropy, proxy metrics, information gain, false positive rate, precision/recall, F1 score, log-odds, calibration, or any ML-specific metric name
-- Instead of accuracy numbers from unvalidated analysis, use directional language: "clear differentiation", "significantly better ranking", "strong signal"
-- Replace "features" with "signals" or "data points" when talking to clients
-- Replace "model" with "the system" or "the scoring system" when appropriate
-- Replace "training window" with "historical data available for learning" or similar
-- Infrastructure details ("single model", "no architecture changes", "XGBoost") are internal — omit them unless the client specifically cares
-
-**Attribution rules:**
-- When two data sources disagree (e.g., CRM shows X but behavioral data shows Y), use cautious language ("some students" not "most students")
-- Don't assert behavioral explanations for data gaps — the gap could be tracking issues, integration problems, or genuine behavior differences
-- Don't quote specific accuracy percentages unless they come from a validated, deployed model
-
-**Number rules:**
-- Verify whether counts are unique entities or duplicated observations (e.g., per target_date in ML training data)
-- Use the correct unit: "applications" vs "students" vs "observations"
-- Percentages and rates are safer than raw counts for client communication (less ambiguity about deduplication)
-- When showing enrollment/conversion rates, always note what the baseline comparison is
+Apply the language, attribution, and number rules from `references/language-rules.md`.
+Key principles: never use ML jargon (AUC, entropy, F1), replace "features" with "signals",
+use directional language instead of unvalidated accuracy numbers, and prefer rates over raw counts.
 
 ### Step 4: Categorize Proposed Changes
 
@@ -141,25 +137,8 @@ framing, even the best analysis becomes shelf-ware.
    themselves (not model accuracy — business KPIs). E.g., "yield rate for contacted at-risk
    students vs. control group."
 
-**Activation section placement:**
-- **Detailed version:** Dedicated right-column section or callout box titled "What This Means For Your Team"
-- **Minimal version:** 2-3 bullet points under each proposed change showing the operational impact
-- **Bullet-point version:** A separate "Activation" section after the two-tier proposed changes,
-  listing stakeholder → action → expected outcome for each item
-
-**Common activation patterns for ML/propensity projects:**
-- **Prioritized outreach lists** — scores drive daily/weekly contact queues
-- **Triggered interventions** — score drops below threshold → automated alert to counselor
-- **Resource allocation** — shift budget/staffing toward segments with highest ROI
-- **Campaign targeting** — marketing segments based on propensity tiers
-- **Early warning dashboards** — leadership sees at-risk cohorts before it's too late
-- **Process redesign** — eliminate low-value steps, add high-value touchpoints
-
-**Anti-patterns to avoid:**
-- "Improved predictions" without saying who uses them and how
-- "Better insights" without naming the insight and the action it drives
-- "Data-driven decisions" without specifying which decision changes
-- Activation plans that require the client to build new infrastructure you haven't scoped
+See `references/activation-patterns.md` for common activation patterns, anti-patterns,
+and placement guidance per version (detailed/minimal/bullet-point).
 
 ### Step 6: Design the Narrative Structure
 
@@ -191,120 +170,27 @@ All versions must include:
 
 ### Step 7: Build the HTML (via `frontend-design` skill)
 
-Invoke the `frontend-design` skill for HTML generation. This skill handles typography, color,
-motion, spatial composition, and visual details — do NOT re-implement those decisions here.
-Instead, pass the frontend-design skill the following constraints specific to proposal slides:
-
-**Constraints to pass to frontend-design:**
-- **Format:** Self-contained HTML at 1280x720px (16:9 aspect ratio)
-- **Purpose:** Client-facing proposal slide — must feel premium, trustworthy, and actionable
-- **Tone:** Match to audience (executive = refined/minimal, operational = data-rich/structured)
-- **The "recommended" action should use a warm accent (amber/gold) to draw the eye**
-- **Must include `@media print` rules for PDF export**
-- **Self-contained (all styles inline, Google Fonts via CDN)**
-
-**Content layout guidance (pass to frontend-design as structure requirements):**
-- CSS Grid for the main layout
-- Generous padding (44-56px edges)
-- Clear section labels (uppercase, letter-spaced, colored)
-
-**Data visualization:**
-- Horizontal bar charts for rate comparisons (simple CSS, no JS libraries needed)
-- Stat cards/pills for key numbers
-- Progress bars for before/after comparisons
-- Keep it simple — if a number tells the story, you don't need a chart
-
-**Activation section styling:**
-- The "What This Means For Your Team" / activation content from Step 5 should be visually
-  distinct — use a different background shade, icon badges per stakeholder role, or a
-  bordered callout box. This section is what makes the proposal actionable, not just informative.
+Invoke the `frontend-design` skill for HTML generation. Pass it the constraints and layout
+specs from `references/html-build-specs.md`. Do not re-implement typography or visual
+design decisions — delegate those to `frontend-design`.
 
 ### Step 8: Deliver Four Outputs
 
-Always produce all four:
+Generate all four files:
+1. `[name]_slide.html` — Detailed 3-column version with full evidence and activation
+2. `[name]_slide_minimal.html` — 2-column version with ~40% less text
+3. `[name]_slide_bullets.html` — Plain bullet-point version, minimal styling
+4. `[name]_slide.pdf` — Print-ready PDF from detailed HTML
 
-1. **`[name]_slide.html`** — Detailed version with full evidence, multiple data points, and comprehensive impact section
-2. **`[name]_slide_minimal.html`** — Brief version with ~40% less text, simpler layout, same key message
-3. **`[name]_slide_bullets.html`** — Plain bullet-point version for traditional-deck stakeholders. Clean white background, minimal styling, no charts. Just organized text with the two-tier structure and hours.
-4. **`[name]_slide.pdf`** — Print-ready PDF generated from the detailed HTML version
-
-**PDF generation:** Convert the detailed HTML to PDF using puppeteer or browser print.
-The HTML must include these `@media print` rules to prevent content splitting across pages:
-
-```css
-@media print {
-  .section, .card, .callout { break-inside: avoid; }
-  p { break-inside: avoid; }
-  h1, h2, h3 { break-after: avoid; }
-  .activation-panel { break-inside: avoid; }
-}
-```
-
-**Option A — puppeteer (if available):**
-```javascript
-await page.pdf({
-  path: outputPath,
-  format: 'A4',
-  printBackground: true,
-  margin: { top: '15mm', bottom: '15mm', left: '12mm', right: '12mm' },
-});
-```
-
-**Option B — Chrome headless (fallback, no npm install needed):**
-```bash
-"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-  --headless --disable-gpu \
-  --print-to-pdf="/absolute/path/to/output.pdf" \
-  --no-pdf-header-footer \
-  --print-to-pdf-no-header \
-  "file:///absolute/path/to/input.html"
-```
-
-Key gotchas for Chrome headless:
-- **Always use absolute paths** for both `--print-to-pdf` and the HTML URL — Chrome writes
-  relative to its own CWD, not the HTML file location.
-- **`--no-pdf-header-footer`** is critical — without it Chrome adds a date, page title, URL,
-  and page numbers to every page, which looks unprofessional.
-- **`--print-to-pdf-no-header`** is a separate flag that also helps suppress headers.
-- CVDisplayLink errors on macOS are harmless — ignore them.
-- Prefer Option B when puppeteer is not pre-installed, as `npx puppeteer` downloads ~300MB.
-
-Open all HTML versions in the browser for the user to preview. Explain the key differences.
-Note the PDF location for sharing via email or printing.
+See `references/html-build-specs.md` for PDF generation commands (Chrome headless or puppeteer)
+and `@media print` rules. Open all HTML versions in the browser for preview.
 
 ### Step 9: Accuracy Review (Optional but Recommended)
 
-When the deck makes **verifiable claims** against a codebase, data source, or analysis pipeline,
-run the `agent-review-panel` skill to adversarially verify accuracy before presenting.
-
-**When to trigger:**
-- The deck references specific counts (e.g., "17 analysis types", "27 segments") derived from code
-- The deck claims technical capabilities backed by SQL, scripts, or models
-- The audience is technically sophisticated and will fact-check claims
-- The deck describes methodology (e.g., "Markov attribution") that could be over-stated
-
-**What the panel checks:**
-- Do headline numbers match verifiable counts in the codebase?
-- Does each claimed capability have backing code/SQL?
-- Are methodological claims accurate (e.g., is "attribution" actually attribution, or just correlation)?
-- Are there unbacked claims that could embarrass you if challenged?
-- Are real capabilities missing from the deck (underselling)?
-
-**How to use the output:**
-- Fix any claims rated CRITICAL or HIGH by the panel
-- Soften language where the panel flags over-statement (e.g., "every channel" → "key channels")
-- Reduce counts to match only items with direct backing evidence
-- Add qualifiers where methodology spans multiple tools (e.g., "AMC extraction + R modeling")
-
-**Common over-claim patterns the panel catches:**
-- Counting file variants as distinct capabilities (inflated numbers)
-- Presenting a multi-step pipeline as a single capability (e.g., SQL + R as "SQL-based attribution")
-- Claiming causal inference when only observational comparison exists ("incremental lift" vs "ad-exposed vs organic comparison")
-- Using universal quantifiers ("every", "all", "unified") when coverage is partial
-- Listing capabilities without backing implementation ("Custom rules" with no code)
-
-After fixing panel findings, apply the same fixes across all three versions (detailed, minimal, bullets)
-and any translations.
+When the deck makes verifiable claims against a codebase or data source, run the
+`agent-review-panel` skill to adversarially verify accuracy. Apply fixes across all
+three versions. See `references/accuracy-review.md` for trigger criteria and common
+over-claim patterns.
 
 ### Step 10: Iterate on Feedback
 
@@ -336,40 +222,47 @@ Before delivering, verify:
 - [ ] Renders cleanly at 1280x720
 - [ ] If deck references verifiable code/data: accuracy review panel run (Step 9)
 
-## Example: Narrative Framing
+## Examples
 
-**Bad (technical):**
-> "Expanding application_stage from 4 to 7 categories improves proxy AUC from 0.50 to 0.96
-> with 62% entropy reduction for submitted applications."
+See `references/language-rules.md` for narrative framing examples (bad technical vs good client-friendly).
+See `references/activation-patterns.md` for activation framing examples.
 
-**Good (client-friendly):**
-> "Today, all submitted applications are scored identically. By connecting directly to
-> Salesforce admissions data, the system can distinguish between students still in review,
-> those who've been accepted, and those who've deposited — with dramatically different
-> enrollment outcomes at each stage."
+## Input / Output Contract
 
-**Bad (overconfident):**
-> "Most students progress without triggering digital events."
+**Input:** Takes as input one or more of: JSON analysis results, markdown reports, BQ query output,
+conversation context describing findings, or file paths to analysis artifacts.
 
-**Good (cautious):**
-> "Some students progress through the admissions funnel without triggering these
-> digital events — Salesforce holds the authoritative record."
+**Output:** Produces four files scoped to the `client-proposal-slide` namespace:
+- `[name]_slide.html` — detailed 3-column version (1280x720px)
+- `[name]_slide_minimal.html` — minimal 2-column version
+- `[name]_slide_bullets.html` — plain bullet-point version
+- `[name]_slide.pdf` — print-ready PDF from Chrome headless
 
-## Example: Activation Framing
+All outputs are self-contained HTML with inline styles. No external dependencies at runtime.
 
-**Bad (no activation):**
-> "The system will produce more accurate predictions by incorporating deposit status data."
+## Error Handling
 
-**Good (activation-focused):**
-> "Each morning, admissions counselors receive a prioritized outreach list — students
-> who've been accepted but haven't deposited, ranked by risk of choosing another school.
-> Instead of calling all 200 accepted students, your team focuses on the 40 most at-risk.
-> You'll know it's working when deposit rates for contacted students exceed the baseline."
+- If source data files are empty or missing, ask the user to provide data before proceeding.
+  Do not generate slides with fabricated content.
+- If the `frontend-design` skill is unavailable, fall back to inline CSS styling. The output
+  will be functional but less visually polished. Log a warning.
+- If Chrome headless fails for PDF generation, skip the PDF and inform the user. The three
+  HTML files are the primary deliverables.
+- If discovery questions are skipped, proceed with reasonable defaults and flag all assumptions
+  explicitly in the output.
 
-**Bad (vague stakeholder):**
-> "This improvement benefits the enrollment team."
+## Safety & Idempotency
 
-**Good (specific stakeholder + action):**
-> "Your enrollment marketing team adjusts email cadence by propensity tier — high-risk
-> students get a personal outreach call within 48 hours of acceptance, while low-risk
-> students continue the standard drip campaign."
+This skill is safe to re-run multiple times. Each run produces new output files without
+modifying existing files. Running again with the same input produces equivalent output.
+No side effects beyond file creation.
+
+## Composability & Handoff
+
+- **Before this skill:** Use the `brainstorming` skill for discovery if context is unclear.
+- **After this skill:** Use `agent-review-panel` to verify accuracy of claims in the deck.
+- **Depends on:** `frontend-design` skill for HTML generation quality. Requires Google Chrome
+  for PDF export (if not available, use puppeteer as alternative, or skip PDF).
+- **For internal documentation** instead of client proposals, use a different approach —
+  suggest using standard markdown docs or wiki tools instead.
+- Works with Claude Code compatible with version >= 1.0. Supported versions: Claude Code v1.x+.
