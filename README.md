@@ -177,6 +177,7 @@ The skill enforces these checks before delivery:
 
 | Version | Changes |
 |---------|---------|
+| 3.2.0 | Schliff-improved: compressed verbose sections, added why-reasoning for efficiency, removed redundant sections (composite 89.1 → 90.8) |
 | 3.1.0 | Added PDF output with `@media print` page break rules, demo screenshot |
 | 3.0.0 | Brainstorming discovery phase, business activation section, frontend-design delegation |
 | 2.1.0 | Adversarial accuracy review via agent-review-panel |
@@ -184,7 +185,7 @@ The skill enforces these checks before delivery:
 
 ## Acknowledgements
 
-Trigger accuracy and eval suite improved using [schliff](https://github.com/Zandereins/schliff) — an autonomous skill scoring and improvement framework (composite score: 64 → 89).
+Skill quality improved using [schliff](https://github.com/Zandereins/schliff) — an autonomous skill scoring and improvement framework (composite score: 89.1 → 90.8).
 
 ## License
 
