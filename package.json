@@ -1,0 +1,10 @@
+{
+  "name": "client-proposal-slide",
+  "version": "3.1.0",
+  "private": true,
+  "description": "Generate activation-focused HTML presentation slides that translate technical analysis into client-friendly proposals with business activation framing. Starts with brainstorming discovery phase, produces three versions (detailed, minimal, bullet-point), auto-translates ML jargon, delegates HTML to frontend-design skill, and optionally runs adversarial accuracy review via multi-agent panel.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "type": "module"
+}
