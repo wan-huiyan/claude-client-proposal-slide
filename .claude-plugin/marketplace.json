@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "wan-huiyan-client-proposal-slide",
+  "description": "Single-plugin marketplace for client-proposal-slide — activation-focused HTML presentation slides from technical analysis for non-technical stakeholders.",
+  "owner": {
+    "name": "Huiyan Wan"
+  },
+  "plugins": [
+    {
+      "name": "client-proposal-slide",
+      "source": "./plugins/client-proposal-slide",
+      "description": "Activation-focused HTML presentation slides from technical analysis for non-technical stakeholders.",
+      "version": "3.2.0"
+    }
+  ]
+}
